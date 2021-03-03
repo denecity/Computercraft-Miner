@@ -14,3 +14,6 @@ It will output every block it mines in the outpuit Ender Chest.
 - Put a Railcraft Standard Worldspike in slot 15
 - Type "pastebin get HwFQ6cBj miner" in the turtle console
 - Type miner to start the program (it will mine the bock directly below it, so be mindful of that)
+
+
+- "pastebin get hCwc0YhH stripminer" for the unchunkloaded version (only one ender chest in slot 16)
