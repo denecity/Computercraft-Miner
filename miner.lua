@@ -89,7 +89,7 @@ function chunkload()
     end
  
     turtle.select(chunk) -- select chunkloader 2
-    detail = turtle.getIdemDetail()
+    detail = turtle.getItemDetail()
     if not detail.name == "railcraft:worldspike" then
         turtle.drop()
     end 
