@@ -6,6 +6,7 @@ distance = 0
 
 chunk = 15
 loader = 15
+start = 0
 
 turtle.select(1)
 turtle.refuel()
@@ -50,7 +51,6 @@ end
 
 
 function chunkload()
-
     turtle.digDown()
     while turtle.detect() do
         turtle.dig()
@@ -90,7 +90,11 @@ function chunkload()
     end
 
     turtle.select(chunk) -- select chunkloader 2
-    turtle.drop()
+    if start == 1 then
+        start = 0
+    else
+        turtle.drop()
+    end
     turtle.digDown() -- get chunkloader 2
 
     turtle.turnLeft()
@@ -102,24 +106,6 @@ function chunkload()
     turtle.select(1) -- reset
 end
 
-function fuel()
-    if turtle.getFuelLevel() < 10000 then
-        for i=1, 12, 1 do
-            turtle.select(i)
-            turtle.refuel()
-            if turtle.getFuelLevel() >= 10000 then
-                break
-            end
-        end
-    end
-    if turtle.getFuelLevel() < 10000 then
-        print("Turtle has no fuel!")
-        return 0
-    else
-        return 1
-    end
-    turtle.select(1)
-end
 
 
 function veinTurnLeft()
