@@ -90,10 +90,10 @@ function chunkload()
     end
 
     turtle.select(chunk) -- select chunkloader 2
-    if start == 1 then
-        start = 0
-    else
+    if start == 0 then
         turtle.drop()
+    else
+        start = 0
     end
     turtle.digDown() -- get chunkloader 2
 
