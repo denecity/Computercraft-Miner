@@ -12,5 +12,5 @@ It will output every block it mines in the outpuit Ender Chest.
 - Put the EnderStorage Ender Chest filled with enderpearls in slot 16 (you need about 1 pearl every 2 hours)
 - Put a Railcraft Standard Worldspike in slot 14
 - Put a Railcraft Standard Worldspike in slot 15
-- Type "pastebin get 7cGpDvwE miner" in the turtle console
+- Type "pastebin get p9VBT651 miner" in the turtle console
 - Type miner to start the program (it will mine the bock directly below it, so be mindful of that)
