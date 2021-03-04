@@ -15,7 +15,7 @@ It will output every block it mines in the outpuit Ender Chest.
 - Type "pastebin get HwFQ6cBj miner" in the turtle console
 - Type miner to start the program (it will mine the bock directly below it, so be mindful of that)
 
-## How to set up Stripminer:
+## How to set up Stripminer (non chunkloaded areaminer):
 
 - "pastebin get CmwrFSv2 stripminer" for the unchunkloaded version
 - Coal in slot 1
