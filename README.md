@@ -17,6 +17,6 @@ It will output every block it mines in the outpuit Ender Chest.
 
 ## How to set up Stripminer:
 
-- "pastebin get hCwc0YhH stripminer" for the unchunkloaded version
+- "pastebin get CmwrFSv2 stripminer" for the unchunkloaded version
 - Coal in slot 1
 - Ender Chest in slot 16
