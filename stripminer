@@ -1,0 +1,268 @@
+-- stripminer
+-- Denis Titov, 03.03.2021
+ 
+armDistance = 3 -- distance between arms (whole blocks)
+armNumber = 16
+armLenght = 32
+ 
+levelDistance = 3 -- distance between levels (whole blocks)
+levelNumber = 10
+ 
+veinMoves = {}
+mode = 1
+distance = 0
+ 
+turtle.select(1)
+turtle.refuel()
+ 
+function mine()
+    while true do
+        for i=1, levelNumber, 1 do
+            for i=1, armNumber, 1 do
+                for i=1, armDistance + 1, 1 do
+                        saveForward()
+                        search()
+                end
+                mineArmLeft()
+                fuel()
+                ender()
+                mineArmRight()
+                fuel()
+                ender()
+            end
+ 
+            turtle.turnLeft()
+            turtle.turnLeft()
+ 
+            for i=1, levelDistance + 1,1 do
+                saveUp()
+            end
+ 
+            mineArmLeft()
+            fuel()
+            ender()
+            mineArmRight()
+            fuel()
+            ender()
+ 
+        end
+    end
+end
+ 
+function mineArmRight()
+    turtle.turnRight()
+    for i=1, armLenght, 1 do
+        saveForward()
+        search()
+    end
+    turtle.turnLeft()
+    turtle.turnLeft()
+    for i=1, armLenght, 1 do
+        saveForward()
+    end
+    turtle.turnRight()
+end
+ 
+function mineArmLeft()
+    turtle.turnLeft()
+    for i=1, armLenght, 1 do
+        saveForward()
+        search()
+    end
+    turtle.turnLeft()
+    turtle.turnLeft()
+    for i=1, armLenght, 1 do
+        saveForward()
+    end
+    turtle.turnLeft()
+end
+ 
+function saveForward()
+    while turtle.detect() do
+        turtle.dig()
+    end
+    turtle.forward()
+    distance = distance + 1
+end
+ 
+function saveUp()
+    while turtle.detectUp() do
+        turtle.digUp()
+    end
+    turtle.up()
+end
+ 
+function saveDig()
+    while turtle.detect() do
+        turtle.dig()
+    end
+end
+ 
+function saveDigUp()
+    while turtle.detectUp() do
+        turtle.digUp()
+    end
+end
+ 
+function saveForwardDiscrete()
+    while turtle.detect() do
+        turtle.dig()
+    end
+    turtle.forward()
+end
+ 
+function ender()
+    while turtle.detect() do
+        turtle.dig()
+    end
+    turtle.select(16)
+    turtle.place()
+    for i=1, 12, 1 do
+        turtle.select(i)
+        turtle.drop()
+    end
+    turtle.select(16)
+    turtle.dig()
+    turtle.select(1)
+end
+ 
+function fuel()
+    if turtle.getFuelLevel() < 10000 then
+        for i=1, 15, 1 do
+            turtle.select(i)
+            turtle.refuel()
+            if turtle.getFuelLevel() >= 10000 then
+                break
+            end
+        end
+    end
+    if turtle.getFuelLevel() < 10000 then
+        print("Turtle has no fuel!")
+        return 0
+    else
+        return 1
+    end
+    turtle.select(1)
+end
+ 
+function veinTurnLeft()
+    table.insert(veinMoves, 1)
+    turtle.turnLeft()
+end
+ 
+function veinMoveForward()
+    table.insert(veinMoves, 2)
+    turtle.forward()
+end
+ 
+function veinMoveUp()
+    table.insert(veinMoves, 3)
+    turtle.up()
+end
+ 
+function veinMoveDown()
+    table.insert(veinMoves, 4)
+    turtle.down()
+end
+ 
+function veinReverse()
+    if veinMoves[#veinMoves - 2] == 1 and veinMoves[#veinMoves - 1] == 1 and veinMoves[#veinMoves] == 1 then
+        turtle.turnLeft()
+        table.remove(veinMoves)
+        table.remove(veinMoves)
+        table.remove(veinMoves)
+    elseif veinMoves[#veinMoves] == 1 then
+        turtle.turnRight()
+        table.remove(veinMoves)
+    elseif veinMoves[#veinMoves] == 2 then
+        turtle.back()
+        table.remove(veinMoves)
+    elseif veinMoves[#veinMoves] == 3 then
+        turtle.down()
+        table.remove(veinMoves)
+    elseif veinMoves[#veinMoves] == 4 then
+        turtle.up()
+        table.remove(veinMoves)
+    end
+end
+ 
+function mineMove(direction)-- 1=up, 2=forward, 3=down
+    if direction == 1 then
+        saveDigUp()
+        veinMoveUp()
+    elseif direction == 3 then
+        turtle.digDown()
+        veinMoveDown()
+    elseif direction == 2 then
+        while turtle.detect() do
+            saveDig()
+        end
+        veinMoveForward()
+    else
+        print("no direction input (minemove)")
+    end
+    return search()
+end
+ 
+function search()
+    success, block = turtle.inspectUp()
+    if block.name ~= nil and string.find(block.name, "ore") then
+        mode = 2
+        return mineMove(1)
+    end
+ 
+    success, block = turtle.inspectDown()
+    if block.name ~= nil and string.find(block.name, "ore") then
+        mode = 2
+        return mineMove(3)
+    end
+ 
+    success, block = turtle.inspect()
+    if block.name ~= nil and string.find(block.name, "ore") then
+        mode = 2
+        return mineMove(2)
+    end
+ 
+    veinTurnLeft()
+    success, block = turtle.inspect()
+    if block.name ~= nil and string.find(block.name, "ore") then
+        mode = 2
+        return mineMove(2)
+    end
+ 
+    veinTurnLeft()
+    success, block = turtle.inspect()
+    if block.name ~= nil and string.find(block.name, "ore") then
+        mode = 2
+        return mineMove(2)
+    end
+ 
+    veinTurnLeft()
+    success, block = turtle.inspect()
+    if block.name ~= nil and string.find(block.name, "ore") then
+        mode = 2
+        return mineMove(2)
+    end
+ 
+    if #veinMoves > 3 then
+        return back()
+    else
+        veinTurnLeft()
+        veinMoves = {}
+        print("normal mining...")
+        for i=1, 4, 1 do
+            table.remove(veinMoves)
+        end
+        return
+    end
+end
+ 
+function back()
+    while veinMoves[#veinMoves] == 1 do
+        veinReverse()
+    end
+    veinReverse()
+    return search()
+end
+ 
+mine() --hCwc0YhH
